@@ -103,22 +103,21 @@
 
 //declaration
 console.log(scream(15, 10))
-function scream(a, b)
-{
-//    const result = a*b
-//    return result
-return a*b
+function scream(a, b) {
+    //    const result = a*b
+    //    return result
+    return a * b
 }
 
 
 //expression
 
-const wowScream = function(){
+const wowScream = function () {
     alert("AAA")
 }
 
 //Arrow
-const arrow = ()=>{
+const arrow = () => {
     alert("AAAAAAAAAA")
 }
 
@@ -147,7 +146,7 @@ const getTask = () => {
     // else{
     //     symbol = "-"
     // }
-const symbol = (Math.random() > 0.5) ? "+" : "-"
+    const symbol = (Math.random() > 0.5) ? "+" : "-"
 
     const task = `${getRandomNumInRange(0, 100)} ${symbol} ${getRandomNumInRange(0, 100)}`
     gameState.rightAnswer = eval(task)
@@ -174,19 +173,19 @@ const gameState = {
 
 }
 
-const startGameFunc = () =>{
-    if (!gameState.taskInProcess){
-        title.innerText ="Игра началась"
+const startGameFunc = () => {
+    if (!gameState.taskInProcess) {
+        title.innerText = "Игра началась"
         userAnswer.value = null
-       //генерируем задачу и ответ
-    //    const task = getTask()
-       //показываю задачу пользователю
-       userTask.innerText = getTask()
-       userAnswer.hidden = false
-       //меняю кнопку и меняю состояние
-       btnGame.innerText = "Проверить"
-       toggleGameState()
-    } else{
+        //генерируем задачу и ответ
+        //    const task = getTask()
+        //показываю задачу пользователю
+        userTask.innerText = getTask()
+        userAnswer.hidden = false
+        //меняю кнопку и меняю состояние
+        btnGame.innerText = "Проверить"
+        toggleGameState()
+    } else {
         //сравнить ответ пользователя с правильным
         const isRight = gameState.rightAnswer == userAnswer.value
         // вывести результат
@@ -202,12 +201,14 @@ const startGameFunc = () =>{
 
 btnGame.addEventListener("click", startGameFunc)
 userAnswer.addEventListener("keydown", (e) => {
-    if(e.key === "Enter"){
-        startGameFunc()   
-    } else if(e.key === "Escape"){
+    if (e.key === "Enter") {
+        startGameFunc()
+    } else if (e.key === "Escape") {
         userAnswer.blur()
     }
 })
+
+
 
 
 
@@ -229,26 +230,111 @@ const counterEl = document.querySelector(".choosed_block span")
 // }
 const choosedState = {
     countElements: 0,
-    setCountValue(value){
+    setCountValue(value) {
         this.countElements += value
         counterEl.innerText = this.countElements
     }
 }
 
 const eventFunc = (e) => {
-    if(e.target.className === ""){
+    if (e.target.className === "") {
         e.target.className = "choosed_element"
         choosedState.setCountValue(1)
         // counterEl.innerText = +counterEl.innerText + 1
     }
-    else{
+    else {
         e.target.className = ""
         // counterEl.innerText = counterEl.innerText - 1
         choosedState.setCountValue(-1)
     }
 }
 
-for(let i = 0; i<choosedEl.length; i++){
+for (let i = 0; i < choosedEl.length; i++) {
     choosedEl[i].addEventListener("click", eventFunc)
 }
-choosedEl[2].removeEventListener("click", eventFunc)
+// choosedEl[2].removeEventListener("click", eventFunc)
+
+const timeIsOver = () => {
+    alert("Время вышло!")
+}
+
+// setTimeout(timeIsOver, 2000)
+
+
+// const alarm = setInterval(timeIsOver, 3000)
+
+
+
+// const alarm = setInterval(() => {
+// const wantToSleep = confirm("Хотите ои вы спать?")  
+//     if(wantToSleep){
+//         console.log("tic")
+//     }
+//     else{
+//         clearInterval(alarm)
+//     }
+// }, 3000)
+
+
+// clearInterval(alarm)
+// console.log("1")
+// setTimeout(()=>{
+// console.log("2")
+// }, 0)
+// console.log("3")
+
+const postsBlock = document.querySelector(".post_block-container")
+const showPostsBTN = document.querySelector(".posts_block button")
+
+const func = () => 5
+
+
+
+function addPost(title, body) {
+    const postsTitle = document.createElement("h3")
+    const postsBody = document.createElement("span")
+    const postItem = document.createElement("p")
+
+    postsTitle.innerText = title
+    postsBody.innerText = body
+
+    postItem.append(postsTitle, postsBody)
+    postsBlock.append(postItem)
+}
+
+function getPosts() {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(res => res.json())
+        .then(data => {
+            for (item of data) {
+                addPost(item.title, item.body)
+            }
+            addPost(data[7].title, data[7].body)
+            console.log(data)
+        })
+        .catch(err => console.log(err.message))
+}
+
+// function createPost(title, body, userId) {
+//     fetch('https://jsonplaceholder.typicode.com/posts', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//             // title: title,
+//             // body: body,
+//             // userId: userId,
+//             title,
+//             body,
+//             userId,
+//         }),
+//         headers: {
+//             'Content-type': 'application/json; charset=UTF-8',
+//         }
+//     })
+//         .then(res => {
+//             console.log(res)
+//         })
+//         .catch(err => console.log(err.message))
+// }
+// createPost("title", "body", 15)
+
+showPostsBTN.onclick = getPosts;
